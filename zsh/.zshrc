@@ -33,6 +33,9 @@ alias py="python"
 alias ve='python3 -m venv ./venv'
 alias va='source ./venv/bin/activate'
 
+# Add to path for MacOS
+export PATH="/usr/local/lib/node_modules/:$PATH"
+
 # TODO: change perl paths
 PATH="/home/zarath/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/zarath/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
