@@ -36,6 +36,8 @@ ts.setup({
 	extensions = {
 		file_browser = {
 			hijack_netrw = true,
+			grouped = true,
+			display_stat = { size = true, mode = true },
 		},
 	},
 })
