@@ -16,7 +16,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+vim.keymap.set("n", "<leader>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 
 -- Copy/paste to primary (*) and clipboard (+) in normal mode
@@ -32,7 +32,7 @@ vim.keymap.set("v", "<leader>Y", '"+y')
 vim.keymap.set("v", "<leader>P", '"+p')
 
 -- Allow oil to navigate above the original nvim call
-vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+--vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 
 -- Create new journal entry with current date as title. Open if file exists.
 vim.keymap.set("n", "<leader>jo", function()
