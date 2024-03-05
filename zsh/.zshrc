@@ -27,6 +27,9 @@ fi
 # Aliases (run "alias" to see all active aliases)
 alias l="ls -lahv --color --group-directories-first"
 alias ll="ls -lhv --color --group-directories-first"
+
+alias .='alacritty --working-directory=$(pwd) & disown'
+
 alias vi="nvim -d"
 alias vim="nvim -d"
 alias nvim="nvim -d"
