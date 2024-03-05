@@ -11,7 +11,7 @@ require("nvim-autopairs").setup({})
 
 -- Oil config
 require("oil").setup({
-	default_file_explorer = true,
+	default_file_explorer = false,
 	columns = { "icon" },
 	float = {
 		-- Padding around the floating window
@@ -29,6 +29,17 @@ require("oil").setup({
 		end,
 	},
 })
+
+-- Telescope
+local ts = require("telescope")
+ts.setup({
+	extensions = {
+		file_browser = {
+			hijack_netrw = true,
+		},
+	},
+})
+ts.load_extension("file_browser")
 
 -- Config lualine
 require("lualine").setup()
