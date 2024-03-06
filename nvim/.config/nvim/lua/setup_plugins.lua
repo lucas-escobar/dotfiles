@@ -193,6 +193,7 @@ conform.setup({
 		rust = { "rustfmt" },
 		tex = { "latexindent" },
 		go = { "gofmt" },
+		markdown = { "prettier" },
 	},
 	format_on_save = {
 		-- options to be passed to conform.format()
