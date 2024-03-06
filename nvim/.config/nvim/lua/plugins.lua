@@ -14,11 +14,11 @@ Plug("nvim-treesitter/nvim-treesitter", { ["do"] = ":TSUpdate" })
 
 -- Fuzzy finding
 Plug("nvim-telescope/telescope.nvim", { ["tag"] = "0.1.5" })
-Plug("nvim-telescope/telescope-file-browser.nvim")
 Plug("nvim-lua/plenary.nvim")
-Plug("nvim-tree/nvim-web-devicons")
 Plug("BurntSushi/ripgrep")
 Plug("sharkdp/fd")
+Plug("nvim-tree/nvim-web-devicons")
+Plug("nvim-telescope/telescope-file-browser.nvim")
 
 -- Highlighting color values (ie. #FFFFFF)
 Plug("norcalli/nvim-colorizer.lua")

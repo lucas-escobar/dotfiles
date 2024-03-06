@@ -188,6 +188,8 @@ conform.setup({
 		lua = { "stylua" },
 		python = { "autopep8" },
 		javascript = { "prettier" },
+		typescript = { "prettier" },
+		vue = { "prettier" },
 		rust = { "rustfmt" },
 		tex = { "latexindent" },
 		go = { "gofmt" },
