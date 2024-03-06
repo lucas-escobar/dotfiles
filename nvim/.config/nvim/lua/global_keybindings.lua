@@ -9,8 +9,6 @@ vim.keymap.set("i", "<C-c>", "</<C-X><C-O><Esc>F<i", { noremap = false })
 -- Jump up and down half pages while keeping cursor position in center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
 
 -- Fuzzy finding (telescope)
 local builtin = require("telescope.builtin")
