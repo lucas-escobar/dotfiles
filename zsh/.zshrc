@@ -35,8 +35,8 @@ alias vim="nvim -d"
 alias nvim="nvim -d"
 
 alias py="python"
-alias ve='python3 -m venv ./venv'
-alias va='source ./venv/bin/activate'
+alias ve='python3 -m venv ./.venv'
+alias va='source ./.venv/bin/activate'
 
 # Add to path for MacOS
 export PATH="/usr/local/lib/node_modules/:$PATH"
