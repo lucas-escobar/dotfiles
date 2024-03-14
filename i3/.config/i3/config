@@ -19,9 +19,6 @@ font pango:monospace 8
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex-autostart --autostart --environment i3
 
-# lock screen
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-
 # network manager gui for system tray
 exec --no-startup-id nm-applet
 
