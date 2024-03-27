@@ -174,11 +174,12 @@ lspconfig.texlab.setup({
 	--filetypes = { "tex", "plaintex", "bib", "cls" },
 })
 lspconfig.gopls.setup({ capabilities = capabilities })
+lspconfig.clangd.setup({ capabilities = capabilities })
 
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
 tsconfig.setup({
-	ensure_installed = { "go", "python", "rust", "lua", "vue", "javascript", "typescript", "latex" },
+	ensure_installed = { "c", "go", "python", "rust", "lua", "vue", "javascript", "typescript", "latex" },
 })
 
 -- Conform formatting config
