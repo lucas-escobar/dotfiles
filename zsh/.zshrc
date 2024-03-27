@@ -17,6 +17,10 @@ else
 fi
 
 # Aliases (run "alias" to see all active aliases)
+if [ "$OSTYPE" != linux-gnu ]; then  # Is this the macOS system?
+    alias ls=gls
+fi
+
 alias .='alacritty --working-directory=$(pwd) & disown'
 alias l="ls -lahv --color --group-directories-first"
 alias ll="ls -lhv --color --group-directories-first"
