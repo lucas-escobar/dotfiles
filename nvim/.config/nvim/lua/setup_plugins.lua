@@ -44,7 +44,11 @@ ts.setup({
 ts.load_extension("file_browser")
 
 -- Config lualine
-require("lualine").setup()
+require("lualine").setup({
+	options = {
+		icons_enabled = true,
+	},
+})
 
 -- Nightfox config
 local palettes = {
