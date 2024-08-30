@@ -7,3 +7,4 @@ padding = { x = 24, y = 24 }
 
 [font]
 normal = { family = "Noto Sans Mono", style = "Regular"}
+size = 18.0
