@@ -25,4 +25,4 @@ vim.opt.clipboard = "unnamedplus"
 vim.g.rustfmt_autosave = 1
 
 -- to debug lsp issues
-vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("info")
