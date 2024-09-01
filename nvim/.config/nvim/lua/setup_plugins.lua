@@ -170,12 +170,10 @@ lspconfig.pyright.setup({ capabilities = capabilities })
 lspconfig.lua_ls.setup({ capabilities = capabilities })
 lspconfig.volar.setup({
 	capabilities = capabilities,
-	-- volar handles other ts/js filetypes
 	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
 })
 lspconfig.texlab.setup({
 	capabilities = capabilities,
-	--filetypes = { "tex", "plaintex", "bib", "cls" },
 })
 lspconfig.gopls.setup({ capabilities = capabilities })
 lspconfig.clangd.setup({ capabilities = capabilities })
