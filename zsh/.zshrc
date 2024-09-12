@@ -30,12 +30,16 @@ alias nvim="nvim -d"
 alias py="python"
 alias ve='python3 -m venv ./.venv'
 alias va='source ./.venv/bin/activate'
+alias scaf='python3 -m scaffold'
 
 # Add to path for MacOS
 export PATH="/usr/local/lib/node_modules/:$PATH"
 
 # flatpak path 
-export PATH="~/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
+export PATH="~/.local/bin:~/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
+
+# Add rust to path
+export PATH="~/.cargo/bin:$PATH"
 
 # TODO: change perl paths
 PATH="/home/zarath/perl5/bin${PATH:+:${PATH}}"; export PATH;
