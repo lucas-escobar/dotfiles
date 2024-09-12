@@ -22,9 +22,6 @@ Plug("nvim-telescope/telescope-file-browser.nvim")
 -- Highlighting color values (ie. #FFFFFF)
 Plug("norcalli/nvim-colorizer.lua")
 
--- Commenting out code
-Plug("numToStr/Comment.nvim")
-
 -- Color theme management
 Plug("EdenEast/nightfox.nvim")
 
@@ -40,9 +37,6 @@ Plug("hrsh7th/cmp-cmdline")
 Plug("hrsh7th/cmp-vsnip")
 Plug("hrsh7th/vim-vsnip")
 Plug("rafamadriz/friendly-snippets")
-
--- Buffer-style file tree editing
---Plug("stevearc/oil.nvim")
 
 -- Code formatter
 Plug("stevearc/conform.nvim")
