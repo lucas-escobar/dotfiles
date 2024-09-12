@@ -154,6 +154,7 @@ lspconfig.texlab.setup({
 lspconfig.gopls.setup({ capabilities = capabilities })
 lspconfig.clangd.setup({ capabilities = capabilities })
 lspconfig.cmake.setup({ capabilities = capabilities })
+lspconfig.eslint.setup({ capabilities = capabilities })
 
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
