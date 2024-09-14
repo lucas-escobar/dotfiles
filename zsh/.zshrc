@@ -7,6 +7,13 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy/mm/dd"
 ZSH_THEME="candy"
 plugins=(git vi-mode web-search)
+
+ZSH_CACHE="$HOME/.cache/zsh/"
+if [[ ! -d $ZSH_CACHE ]]; then
+  mkdir -p $ZSH_CACHE 
+fi
+ZSH_COMPDUMP="$ZSH_CACHE/.zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
+HISTFILE="$ZSH_CACHE/zsh_history"
 source $ZSH/oh-my-zsh.sh
 
 # user config 
