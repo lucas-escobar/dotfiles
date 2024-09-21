@@ -163,6 +163,7 @@ lspconfig.ts_ls.setup({
       },
 })
 lspconfig.eslint.setup({ capabilities = capabilities })
+lspconfig.tailwindcss.setup({ capabilities = capabilities })
 lspconfig.texlab.setup({ capabilities = capabilities })
 lspconfig.gopls.setup({ capabilities = capabilities })
 lspconfig.clangd.setup({ capabilities = capabilities })
