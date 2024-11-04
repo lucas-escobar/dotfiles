@@ -46,7 +46,11 @@ export PATH="/usr/local/lib/node_modules/:$PATH"
 export PATH="~/.local/bin:~/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
 
 # Add rust to path
-export PATH="~/.cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Add go to path 
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
 
 # TODO: change perl paths
 PATH="/home/zarath/perl5/bin${PATH:+:${PATH}}"; export PATH;
