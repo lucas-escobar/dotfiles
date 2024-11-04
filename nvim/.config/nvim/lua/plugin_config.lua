@@ -168,6 +168,7 @@ lspconfig.texlab.setup({ capabilities = capabilities })
 lspconfig.gopls.setup({ capabilities = capabilities })
 lspconfig.clangd.setup({ capabilities = capabilities })
 lspconfig.cmake.setup({ capabilities = capabilities })
+lspconfig.bashls.setup({ capabilities = capabilities })
 
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
@@ -189,6 +190,7 @@ conform.setup({
 		go = { "gofmt" },
 		markdown = { "prettier" },
 		cmake = { "cmake-format" },
+        sh = { "shfmt" },
 	},
 	format_on_save = {
 		-- options to be passed to conform.format()
