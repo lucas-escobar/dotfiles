@@ -159,6 +159,8 @@ lspconfig.ts_ls.setup({
       filetypes = {
         "javascript",
         "typescript",
+        "typescriptreact",
+        "javascriptreact",
         "vue",
       },
 })
@@ -173,7 +175,7 @@ lspconfig.bashls.setup({ capabilities = capabilities })
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
 tsconfig.setup({
-	ensure_installed = { "c", "go", "python", "rust", "lua", "vue", "javascript", "typescript", "latex" },
+	ensure_installed = { "c", "go", "python", "rust", "lua", "vue", "javascript", "typescript", "latex", "tsx", "vue" },
 })
 
 -- Conform formatting config
@@ -184,6 +186,8 @@ conform.setup({
 		python = { "autopep8" },
 		javascript = { "prettier" },
 		typescript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
 		vue = { "prettier" },
 		rust = { "rustfmt" },
 		tex = { "latexindent" },

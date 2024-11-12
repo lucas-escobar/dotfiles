@@ -1,6 +1,3 @@
-import = [
-    "~/.config/alacritty/themes/themes/nordic.toml"
-]
 
 [window]
 padding = { x = 24, y = 24 }
@@ -8,3 +5,8 @@ padding = { x = 24, y = 24 }
 [font]
 normal = { family = "NotoMono Nerd Font Mono", style = "Regular"}
 size = 13.0
+
+[general]
+import = [
+    "~/.config/alacritty/themes/themes/nordic.toml"
+]
