@@ -116,6 +116,15 @@ cmp.setup({
 	}, {
 		{ name = "buffer" },
 	}),
+    -- TODO: disable snippets in comments
+    --enabled = function()
+    --    local context = require("cmp.config.context")
+    --    if context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
+    --        return false
+    --    else 
+    --        return true
+    --    end
+    --end
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
@@ -184,28 +193,39 @@ conform.setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "autopep8" },
-		javascript = { "prettier" },
-		typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
-		vue = { "prettier" },
+		javascript = { "prettierd", "prettier", stop_after_first = true },
+		typescript = { "prettierd", "prettier", stop_after_first = true },
+        javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+        typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+		vue = { "prettierd", "prettier", stop_after_first = true },
+        svelte = { "prettierd", "prettier", stop_after_first = true },
+        css = { "prettierd", "prettier", stop_after_first = true },
+        html = { "prettierd", "prettier", stop_after_first = true },
+        json = { "prettierd", "prettier", stop_after_first = true },
+        yaml = { "prettierd", "prettier", stop_after_first = true },
+		markdown = { "prettierd", "prettier", stop_after_first = true },
 		rust = { "rustfmt" },
 		tex = { "latexindent" },
 		go = { "gofmt" },
-		markdown = { "prettier" },
 		cmake = { "cmake-format" },
         sh = { "shfmt" },
 	},
-	format_on_save = {
-		-- options to be passed to conform.format()
-		timeout_ms = 500,
-		lsp_fallback = true,
-	},
+    --formatters = {
+    --    prettier = {
+    --      args = function(self, ctx)
+    --        return { "--stdin-filepath", "$FILENAME", 
+    --            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-tailwindcss/dist/index.mjs",
+    --            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-classnames/dist/index.js",
+    --            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-merge/dist/index.js",
+    --            "--print-width", "80"} 
+    --      end,
+    --    },
+    --},
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function(args)
-		conform.format({ bufnr = args.buf })
+		conform.format({ bufnr = args.buf, async = true, timeout_ms = 500, lsp_format = "fallback "})
 	end,
 })
