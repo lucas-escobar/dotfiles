@@ -19,8 +19,10 @@ source $ZSH/oh-my-zsh.sh
 # user config 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
+  export VISUAL='nvim'
 else
   export EDITOR='nvim'
+  export VISUAL='nvim'
 fi
 
 # Aliases (run "alias" to see all active aliases)
@@ -51,4 +53,4 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Add go to path 
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
-source "/home/lucas/.deno/env"
+source "$HOME/.deno/env"
