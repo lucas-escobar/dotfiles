@@ -7,5 +7,5 @@ A repository to keep track of my dotfiles. Directory structured to be used with
 
 1. Clone this repository in user home directory (~/)
 2. Change directory to the root of this repository
-3. Execute `stow <package>` to create symlink from `<repo>/<pkg-name>/` to `~/`
+3. Execute `stow <package>` to create symlink from `<repo>/<package>/` to `~/`
 4. Pull submodules with `git submodule update --init --recursive`
