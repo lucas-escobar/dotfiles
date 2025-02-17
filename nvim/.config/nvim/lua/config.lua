@@ -26,3 +26,30 @@ vim.g.rustfmt_autosave = 1
 
 -- to debug lsp issues
 vim.lsp.set_log_level("info")
+
+--if vim.fn.has('nvim-0.5') == 1 then
+--    local socket_dir = '/tmp/nvim'
+--    local socket_path = string.format('%s/nvim-%d.sock', socket_dir, vim.fn.getpid())
+--
+--    -- Ensure the directory exists
+--    if vim.fn.isdirectory(socket_dir) == 0 then
+--        vim.fn.mkdir(socket_dir, 'p') -- 'p' creates parent directories if necessary
+--        print("Created directory: " .. socket_dir)
+--    end
+--
+--    -- Only start the server if the socket does not already exist
+--    if vim.fn.filereadable(socket_path) == 0 then
+--        vim.fn.serverstart(socket_path)
+--        print("Server started on " .. socket_path)
+--    else
+--        print("Socket already in use: " .. socket_path)
+--    end
+--end
+vim.api.nvim_create_augroup('UserColors', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = 'UserColors',
+  pattern = '*',
+  callback = function()
+    vim.cmd('highlight Normal ctermbg=NONE guibg=NONE')
+  end
+})
