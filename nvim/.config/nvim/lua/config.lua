@@ -25,7 +25,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.g.rustfmt_autosave = 1
 
 -- to debug lsp issues
-vim.lsp.set_log_level("info")
+--vim.lsp.set_log_level("info")
 
 --if vim.fn.has('nvim-0.5') == 1 then
 --    local socket_dir = '/tmp/nvim'
