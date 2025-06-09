@@ -1,5 +1,10 @@
 local vim = vim
 
+require("ibl").setup{
+    indent = { char = "▏" },
+    whitespace = { highlight = { "Whitespace", "NonText" } },
+}
+
 -- Colorizer config
 require("colorizer").setup()
 
@@ -11,7 +16,7 @@ local ts = require("telescope")
 ts.setup({
 	extensions = {
 		file_browser = {
-			hijack_netrw = true,
+			hijack_netrw = true,           
 			grouped = true,
 			display_stat = { size = true, mode = true },
 		},

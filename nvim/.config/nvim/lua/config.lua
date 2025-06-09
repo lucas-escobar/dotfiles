@@ -24,6 +24,9 @@ vim.opt.colorcolumn = "80"
 vim.opt.clipboard = "unnamedplus"
 vim.g.rustfmt_autosave = 1
 
+--vim.opt.list = true 
+--vim.opt.listchars:append("trail:·")
+
 -- to debug lsp issues
 --vim.lsp.set_log_level("info")
 

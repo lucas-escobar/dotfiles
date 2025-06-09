@@ -44,4 +44,6 @@ Plug("stevearc/conform.nvim")
 -- Change the style of the nvim status bar
 Plug("nvim-lualine/lualine.nvim")
 
+Plug("lukas-reineke/indent-blankline.nvim")
+
 vim.call("plug#end")
