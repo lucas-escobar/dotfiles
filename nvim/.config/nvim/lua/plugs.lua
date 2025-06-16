@@ -46,4 +46,6 @@ Plug("nvim-lualine/lualine.nvim")
 
 Plug("lukas-reineke/indent-blankline.nvim")
 
+Plug("ErichDonGubler/lsp_lines.nvim")
+
 vim.call("plug#end")

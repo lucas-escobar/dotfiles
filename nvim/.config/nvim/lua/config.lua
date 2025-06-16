@@ -22,9 +22,24 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
 -- yy and pp will use the system clipboard (+)
 vim.opt.clipboard = "unnamedplus"
+
+vim.diagnostic.config({
+	virtual_text = false,
+	virtual_lines = false,
+	float = { source = "if_many" },
+})
+
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or "single"
+	opts.max_width = opts.max_width or 80
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
 vim.g.rustfmt_autosave = 1
 
---vim.opt.list = true 
+--vim.opt.list = true
 --vim.opt.listchars:append("trail:·")
 
 -- to debug lsp issues
@@ -48,11 +63,11 @@ vim.g.rustfmt_autosave = 1
 --        print("Socket already in use: " .. socket_path)
 --    end
 --end
-vim.api.nvim_create_augroup('UserColors', { clear = true })
-vim.api.nvim_create_autocmd('ColorScheme', {
-  group = 'UserColors',
-  pattern = '*',
-  callback = function()
-    vim.cmd('highlight Normal ctermbg=NONE guibg=NONE')
-  end
+vim.api.nvim_create_augroup("UserColors", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+	group = "UserColors",
+	pattern = "*",
+	callback = function()
+		vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
+	end,
 })
