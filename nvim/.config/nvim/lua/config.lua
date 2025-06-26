@@ -29,6 +29,14 @@ vim.diagnostic.config({
 	float = { source = "if_many" },
 })
 
+vim.g.markdown_fenced_languages = {
+	"ts=typescript",
+	"js=javascript",
+	"sh=bash",
+	"rust=rust",
+	"py=python",
+}
+
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts = opts or {}

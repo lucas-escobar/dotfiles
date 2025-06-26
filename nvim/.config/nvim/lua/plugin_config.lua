@@ -102,25 +102,25 @@ lspconfig.rust_analyzer.setup({ capabilities = capabilities })
 lspconfig.pyright.setup({ capabilities = capabilities })
 lspconfig.lua_ls.setup({ capabilities = capabilities })
 lspconfig.volar.setup({ capabilities = capabilities })
-lspconfig.ts_ls.setup({
-	capabilities = capabilities,
-	init_options = {
-		plugins = {
-			{
-				name = "@vue/typescript-plugin",
-				location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-				languages = { "javascript", "typescript", "vue" },
-			},
-		},
-	},
-	filetypes = {
-		"javascript",
-		"typescript",
-		"typescriptreact",
-		"javascriptreact",
-		"vue",
-	},
-})
+--lspconfig.ts_ls.setup({
+--	capabilities = capabilities,
+--	init_options = {
+--		plugins = {
+--			{
+--				name = "@vue/typescript-plugin",
+--				location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+--				languages = { "javascript", "typescript", "vue" },
+--			},
+--		},
+--	},
+--	filetypes = {
+--		"javascript",
+--		"typescript",
+--		"typescriptreact",
+--		"javascriptreact",
+--		"vue",
+--	},
+--})
 lspconfig.eslint.setup({ capabilities = capabilities })
 lspconfig.tailwindcss.setup({ capabilities = capabilities })
 lspconfig.texlab.setup({ capabilities = capabilities })
@@ -130,6 +130,7 @@ lspconfig.cmake.setup({ capabilities = capabilities })
 lspconfig.bashls.setup({ capabilities = capabilities })
 lspconfig.dartls.setup({ capabilities = capabilities })
 lspconfig.zls.setup({ capabilities = capabilities })
+lspconfig.denols.setup({ capabilities = capabilities })
 
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
