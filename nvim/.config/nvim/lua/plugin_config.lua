@@ -131,6 +131,7 @@ lspconfig.bashls.setup({ capabilities = capabilities })
 lspconfig.dartls.setup({ capabilities = capabilities })
 lspconfig.zls.setup({ capabilities = capabilities })
 lspconfig.denols.setup({ capabilities = capabilities })
+lspconfig.cssls.setup({ capabilities = capabilities })
 
 -- Treesitter config
 local tsconfig = require("nvim-treesitter.configs")
@@ -151,6 +152,7 @@ conform.setup({
 		vue = { "prettierd", "prettier", stop_after_first = true },
 		svelte = { "prettierd", "prettier", stop_after_first = true },
 		css = { "prettierd", "prettier", stop_after_first = true },
+		scss = { "prettierd", "prettier", stop_after_first = true },
 		html = { "prettierd", "prettier", stop_after_first = true },
 		htmldjango = { "prettierd", "prettier", stop_after_first = true },
 		json = { "prettierd", "prettier", stop_after_first = true },
