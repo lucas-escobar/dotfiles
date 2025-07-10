@@ -43,6 +43,7 @@ alias scaf='python3 -m scaffold'
 
 # Add to path for MacOS
 export PATH="/usr/local/lib/node_modules/:$PATH"
+export PATH="$HOME/.deno/bin/:$PATH"
 
 # flatpak path 
 export PATH="~/.local/bin:~/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
@@ -53,4 +54,4 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Add go to path 
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
-source "$HOME/.deno/env"
+export PATH=$HOME/dev/flutter/bin:$PATH
