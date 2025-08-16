@@ -1,6 +1,7 @@
 
 [window]
 padding = { x = 24, y = 24 }
+opacity = 0.93
 
 [font]
 normal = { family = "NotoMono Nerd Font Mono", style = "Regular"}
