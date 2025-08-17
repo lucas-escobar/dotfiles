@@ -79,3 +79,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
 	end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.opt_local.spell = true
+		vim.opt_local.spelllang = "en_us"
+	end,
+})

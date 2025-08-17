@@ -1,7 +1,5 @@
 local vim = vim
 
-require("lsp_lines").setup()
-
 require("ibl").setup({
 	indent = { char = "▏" },
 	whitespace = { highlight = { "Whitespace", "NonText" } },
@@ -165,6 +163,12 @@ conform.setup({
 		sh = { "shfmt" },
 		dart = { "dart_format" },
 		zig = { "zigfmt" },
+	},
+	formatters = {
+		latexindent = {
+			command = "latexindent",
+			args = { "-m", "-l" }, -- enable line wrapping and overwrite
+		},
 	},
 	--formatters = {
 	--    prettier = {
