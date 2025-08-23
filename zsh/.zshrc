@@ -31,8 +31,11 @@ if [ "$OSTYPE" != linux-gnu ]; then  # Is this the macOS system?
 fi
 
 alias .='alacritty --working-directory=$(pwd) & disown'
-alias l="ls -lahv --color --group-directories-first"
-alias ll="ls -lhv --color --group-directories-first"
+
+alias l='ls -v --color --group-directories-first'
+alias ll='ls -lahv --group-directories-first --color=always'
+#alias l="ls -lahv --color --group-directories-first"
+#alias ll="ls -lhv --color --group-directories-first"
 alias vi="nvim -d"
 alias vim="nvim -d"
 alias nvim="nvim -d"
