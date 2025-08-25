@@ -2,6 +2,8 @@ local vim = vim
 local Plug = vim.fn["plug#"]
 vim.call("plug#begin")
 
+Plug("folke/zen-mode.nvim")
+
 -- Git integration
 Plug("tpope/vim-fugitive")
 

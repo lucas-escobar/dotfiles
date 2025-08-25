@@ -1,5 +1,53 @@
 local vim = vim
 
+require("zen-mode").setup {
+  window = {
+    width = 90, 
+    backdrop = 1,
+  },
+  on_open = function(win)
+    -- To enable the zen mode gutters to be transparent, the following code 
+    -- has been added. This could use a refactor/simplification
+    vim.wo[win].winhighlight = "Normal:ZenBg,NormalNC:ZenBg"
+    vim.api.nvim_set_hl(0, "ZenBg", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+    vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+  end,
+  on_close = function()
+    vim.api.nvim_set_hl(0, "ZenBg", {})
+  end,
+}
+
+-- Toggle Zen Mode with <leader>z
+vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { silent = true, desc = "Toggle Zen Mode" })
+
+-- Close Neovim if ZenMode is the last window
+vim.api.nvim_create_autocmd("User", {
+  pattern = "ZenLeave",
+  callback = function()
+    -- restore :q to default behavior when leaving Zen
+    vim.keymap.del("n", "q", { buffer = 0 })
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "ZenEnter",
+  callback = function()
+    -- in ZenMode, redefine q to quit nvim if last buffer
+    vim.keymap.set("n", "q", function()
+      if #vim.api.nvim_list_wins() == 1 then
+        vim.cmd("qa") -- quit all of Neovim
+      else
+        vim.cmd("q")  -- just quit Zen window
+      end
+    end, { buffer = 0 })
+  end,
+})
+
 require("ibl").setup({
 	indent = { char = "▏" },
 	whitespace = { highlight = { "Whitespace", "NonText" } },
@@ -167,7 +215,7 @@ conform.setup({
 	formatters = {
 		latexindent = {
 			command = "latexindent",
-			args = { "-m", "-l" }, -- enable line wrapping and overwrite
+			args = { "-m", "-g", "/dev/null" }, -- enable line wrapping and overwrite
 		},
 	},
 	--formatters = {
