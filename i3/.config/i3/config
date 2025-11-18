@@ -29,6 +29,9 @@ set $secondary                       #EC69A0
 bindsym $mod+Return exec $terminal 
 bindsym $mod+d exec --no-startup-id rofi -show drun
 
+# Flameshot selection with Print Screen
+bindsym Print exec --no-startup-id flameshot gui
+
 ### Modify windows
 font $window_font 
 floating_modifier $mod

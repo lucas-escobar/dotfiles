@@ -62,6 +62,17 @@ require("nvim-autopairs").setup({})
 -- Telescope
 local ts = require("telescope")
 ts.setup({
+    defaults = {
+        ripgrep_arguments = {
+          'rg',
+          '--hidden',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case'
+        },
+      },
 	extensions = {
 		file_browser = {
 			hijack_netrw = true,

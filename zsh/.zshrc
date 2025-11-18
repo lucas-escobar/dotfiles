@@ -58,3 +58,179 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 export PATH=$HOME/dev/flutter/bin:$PATH
+
+
+# fuzzy search files and open in $EDITOR
+ff() {
+  local file
+  file=$(fd . | fzf) || return
+  $EDITOR "$file"
+}
+
+# fuzzy search inside files by content
+fg() {
+  rg --no-heading --line-number "$1" |
+    fzf --delimiter : --with-nth=1,2,3 |
+    awk -F: '{print "+"$2" "$1}' |
+    xargs -r $EDITOR
+}
+
+# fuzzy directory jump
+fdc() {
+  local dir
+  dir=$(fd -t d . | fzf) || return
+  cd "$dir"
+}
+
+
+# Print file extension type counts (optionally for a given path)
+nlang() {
+  local PATH_ARG="${1:-.}"
+
+  local BOLD=$(tput bold)
+  local COLOR=$(tput setaf 5)
+  local RESET=$(tput sgr0)
+
+  fd -t f . "$PATH_ARG" \
+    | awk -F. '
+        NF>1 { ext=$NF; files[ext]++; total++ }
+        END {
+          for (e in files)
+            printf "%s %d %.2f%%\n", e, files[e], (files[e]/total*100)
+        }' \
+    | sort -k2 -nr \
+    | awk -v H="${BOLD}${COLOR}" -v R="$RESET" '
+        BEGIN {
+          printf "%s%-8s %-8s %-8s%s\n", H, "ext", "files", "percent", R
+        }
+        { printf "%-8s %-8s %-8s\n", $1, $2, $3 }
+      ' \
+    | column -t
+}
+
+fsize() {
+  local DIR="${1:-.}"
+
+  local BOLD=$(tput bold)
+  local COLOR=$(tput setaf 5)
+  local RESET=$(tput sgr0)
+
+  local total_bytes
+  total_bytes=$(fd -t f . "$DIR" -x stat --printf="%s\n" 2>/dev/null | awk '{sum+=$1} END{print sum}')
+
+  fd -t f . "$DIR" -x stat --printf="%s\t%n\n" 2>/dev/null \
+    | sort -nr \
+    | head -30 \
+    | awk -F'\t' -v total="$total_bytes" -v H="${BOLD}${COLOR}" -v R="${RESET}" '
+        function human(x) {
+          if(x>=1099511627776){return sprintf("%.1fT", x/1099511624)}
+          else if(x>=1073741824){return sprintf("%.1fG", x/1073741824)}
+          else if(x>=1048576){return sprintf("%.1fM", x/1048576)}
+          else if(x>=1024){return sprintf("%.1fK", x/1024)}
+          else {return x "B"}
+        }
+        BEGIN { printf "%s%-8s %-8s %s%s\n", H, "size", "percent", "path", R }
+        { pct = $1/total*100; print human($1), sprintf("%.2f%%", pct), $2 }
+      ' | column -t
+}
+
+dsize() {
+  local DIR="${1:-.}"
+  local BOLD=$(tput bold)
+  local COLOR=$(tput setaf 5)
+  local RESET=$(tput sgr0)
+
+  local total
+  total=$(du -sb "$DIR"/*/ 2>/dev/null | awk '{sum+=$1} END{print sum}')
+
+  du -sh "$DIR"/*/ 2>/dev/null \
+    | sort -hr \
+    | head -30 \
+    | awk -v total="$total" -v H="${BOLD}${COLOR}" -v R="$RESET" '
+        BEGIN { printf "%s%-8s %-8s %s%s\n", H, "size", "percent", "path", R }
+        {
+          cmd="du -sb \"" $2 "\""
+          cmd | getline bytes
+          close(cmd)
+          sub(/\t.*/, "", bytes)
+          pct = bytes / total * 100
+          print $1, sprintf("%.2f%%", pct), $2
+        }
+      ' | column -t
+}
+
+loc() {
+  local DIR="${1:-.}"
+
+  local BOLD=$(tput bold)
+  local COLOR=$(tput setaf 5)
+  local RESET=$(tput sgr0)
+
+  local total_lines
+  total_lines=$(rg --files "$DIR" | xargs wc -l 2>/dev/null | awk 'END{print $1}')
+
+  rg --files "$DIR" \
+    | xargs wc -l 2>/dev/null \
+    | sort -nr \
+    | head -30 \
+    | awk -v total="$total_lines" -v H="${BOLD}${COLOR}" -v R="${RESET}" '
+        BEGIN { printf "%s%s\t%s\t%s%s\n", H, "lines", "percent", "path", R }
+        {
+          if(NR==1 && $2=="total") next
+          pct = $1 / total * 100
+          printf "%d\t%.2f%%\t%s\n", $1, pct, $2
+        }
+      ' | column -t
+}
+
+todo() {
+  local DIR="${1:-.}"
+
+  # Get all TODO/FIXME lines, capture text after the keyword
+  local TODOS
+  TODOS=$(rg --no-heading --line-number --color=never \
+      --replace '$1' '.*(?:TODO|FIXME)\s*(.*)' "$DIR")
+
+  [[ -z "$TODOS" ]] && echo "No TODOs found." && return
+
+  # FZF selection with preview
+  local selection
+  selection=$(echo "$TODOS" | fzf --ansi \
+    --preview 'file=$(echo {} | awk -F: "{print \$1}"); line=$(echo {} | awk -F: "{print \$2}"); bat --style=numbers --color=always --line-range ${line}: "$file"' \
+    --preview-window=up:60%)
+
+  if [[ -n "$selection" ]]; then
+    local file=$(echo "$selection" | awk -F: '{print $1}')
+    local line=$(echo "$selection" | awk -F: '{print $2}')
+    $EDITOR +$line "$file"
+  fi
+}
+
+
+rust_structs() {
+  rg -n --no-heading -e '^[[:space:]]*(pub[[:space:]]+)?struct[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' "$@"
+}
+
+
+# find enums
+rust_enums() {
+  rg -n "enum\s+[A-Za-z0-9_]+" src
+}
+
+# find traits
+rust_traits() {
+  rg -n "trait\s+[A-Za-z0-9_]+" src
+}
+
+# find function definitions
+rust_fns() {
+  rg -n "fn\s+[A-Za-z0-9_]+" src
+}
+
+# fuzzy open a Rust symbol definition
+rsym() {
+  rg --no-heading --line-number "$1" src |
+    fzf |
+    awk -F: '{print "+"$2" "$1}' |
+    xargs -r $EDITOR
+}
