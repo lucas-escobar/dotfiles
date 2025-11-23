@@ -1,0 +1,606 @@
+local vim = vim
+
+vim.opt.nu = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
+vim.opt.textwidth = 80
+vim.opt.swapfile = false
+vim.opt.swapfile = false
+vim.opt.undofile = true
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.termguicolors = true
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+vim.opt.isfname:append("@-@")
+vim.opt.updatetime = 50
+vim.opt.colorcolumn = "80"
+-- yy and pp will use the system clipboard (+)
+vim.opt.clipboard = "unnamedplus"
+
+vim.diagnostic.config({
+	virtual_text = false,
+	virtual_lines = false,
+	float = { source = "if_many" },
+})
+
+vim.g.markdown_fenced_languages = {
+	"ts=typescript",
+	"js=javascript",
+	"sh=bash",
+	"rust=rust",
+	"py=python",
+}
+
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or "single"
+	opts.max_width = opts.max_width or 80
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
+vim.g.rustfmt_autosave = 1
+
+--vim.opt.list = true
+--vim.opt.listchars:append("trail:·")
+
+-- to debug lsp issues
+--vim.lsp.set_log_level("info")
+
+--if vim.fn.has('nvim-0.5') == 1 then
+--    local socket_dir = '/tmp/nvim'
+--    local socket_path = string.format('%s/nvim-%d.sock', socket_dir, vim.fn.getpid())
+--
+--    -- Ensure the directory exists
+--    if vim.fn.isdirectory(socket_dir) == 0 then
+--        vim.fn.mkdir(socket_dir, 'p') -- 'p' creates parent directories if necessary
+--        print("Created directory: " .. socket_dir)
+--    end
+--
+--    -- Only start the server if the socket does not already exist
+--    if vim.fn.filereadable(socket_path) == 0 then
+--        vim.fn.serverstart(socket_path)
+--        print("Server started on " .. socket_path)
+--    else
+--        print("Socket already in use: " .. socket_path)
+--    end
+--end
+vim.api.nvim_create_augroup("UserColors", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+	group = "UserColors",
+	pattern = "*",
+	callback = function()
+		vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.opt_local.spell = true
+		vim.opt_local.spelllang = "en_us"
+	end,
+})
+
+local vim = vim
+
+vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+-- Close HTML and XML tags
+vim.keymap.set("i", "<C-c>", "</<C-X><C-O><Esc>F<i", { noremap = false })
+
+-- Jump up and down half pages while keeping cursor position in center
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Copy/paste to primary (*) and clipboard (+) in normal mode
+vim.keymap.set("n", "<leader>y", '"*y')
+vim.keymap.set("n", "<leader>p", '"*p')
+vim.keymap.set("n", "<leader>Y", '"+y')
+vim.keymap.set("n", "<leader>P", '"+p')
+
+-- Copy/paste to primary (*) and clipboard (+) in visual mode
+vim.keymap.set("v", "<leader>y", '"*y')
+vim.keymap.set("v", "<leader>p", '"*p')
+vim.keymap.set("v", "<leader>Y", '"+y')
+vim.keymap.set("v", "<leader>P", '"+p')
+
+-- Allow oil to navigate above the original nvim call
+--vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+
+-- Create new journal entry with current date as title. Open if file exists.
+vim.keymap.set("n", "<leader>jo", function()
+	local filename = os.date("%Y-%m-%d", os.time()) .. ".md"
+	vim.cmd.edit("$HOME/docs/journal/" .. filename)
+end)
+
+-- Recommended for nvim-lspconfig global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		-- Enable completion triggered by <c-x><c-o>
+		vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+		-- Buffer local mappings.
+		-- See `:help vim.lsp.*` for documentation on any of the below functions
+		local opts = { buffer = ev.buf }
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+		vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+		vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+		vim.keymap.set("n", "<space>wl", function()
+			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+		end, opts)
+		vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+		vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+		vim.keymap.set("n", "<space>f", function()
+			vim.lsp.buf.format({ async = true })
+		end, opts)
+	end,
+})
+local palettes = {
+	nightfox = {
+		black = {
+			base = "#191C1D", 
+			bright = "#313638", 
+			dim = "#010202", 
+		},
+		red = {
+			base = "#BD6062", 
+			bright = "#cc8486", 
+			dim = "#a54547", 
+		},
+		green = {
+			base = "#A3D6A9", 
+			bright = "#c6e6ca", 
+			dim = "#80c688", 
+		},
+		yellow = {
+			base = "#F0DFAF", 
+			bright = "#f8f0da", 
+			dim = "#e8ce84", 
+		},
+		blue = {
+			base = "#8FB4D8", 
+			bright = "#b5cde5", 
+			dim = "#699bcb", 
+		},
+		magenta = {
+			base = "#C7A9D9", 
+			bright = "#decce9", 
+			dim = "#b086c9", 
+		},
+		cyan = {
+			base = "#B6D7A8", 
+			bright = "#d3e7cb", 
+			dim = "#99c785", 
+		},
+		white = {
+			base = "#BDC5BD", 
+			bright = "#d8ddd8", 
+			dim = "#a2ada2", 
+		},
+		bg0 = "#191d24", 
+		bg1 = "#242933", -- Base
+		bg2 = "#2f3542", 
+		bg3 = "#394151", 
+		bg4 = "#444d60", 
+
+		fg0 = "#191d24", 
+		fg1 = "#BBBDAF", -- Base
+		fg2 = "#c7c9bd", 
+		fg3 = "#d3d4cb", 
+		fg4 = "#dfe0d9", 
+
+		sel0 = "#394151", 
+		sel1 = "#2f3542", 
+		comment = "#4e596f",
+	},
+}
+
+return palettes
+local palettes = {
+	-- Change nordfox to match the nordic Alacritty theme
+	nordfox = {
+		black = {
+			base = "#191C1D", -- Normal black
+			bright = "#727C7C", -- Bright black
+			dim = "#242933", -- Dim black (background color)
+		},
+		red = {
+			base = "#BD6062", -- Normal red
+			bright = "#D18FAF", -- Bright red
+			dim = "#762121", -- Dim red (darker variant)
+		},
+		green = {
+			base = "#A3D6A9", -- Normal green
+			bright = "#B7CEB0", -- Bright green
+			dim = "#5E8C61", -- Dim green (darker variant)
+		},
+		yellow = {
+			base = "#F0DFAF", -- Normal yellow
+			bright = "#FFF6BF", -- Bright yellow (lighter version of base)
+			dim = "#A8975E", -- Dim yellow (darker variant)
+		},
+		blue = {
+			base = "#8FB4D8", -- Normal blue
+			bright = "#C5D8F5", -- Bright blue (lighter version of base)
+			dim = "#5E81AC", -- Dim blue (darker variant)
+		},
+		magenta = {
+			base = "#C7A9D9", -- Normal magenta
+			bright = "#E2D2F1", -- Bright magenta (lighter version of base)
+			dim = "#9168A6", -- Dim magenta (darker variant)
+		},
+		cyan = {
+			base = "#87C0CD", -- Normal cyan
+			bright = "#C3E6ED", -- Bright cyan (lighter version of base)
+			dim = "#47818E", -- Dim cyan (darker variant)
+		},
+		white = {
+			base = "#BDC5BD", -- Normal white
+			bright = "#F6F6F6", -- Bright white (lighter version of base)
+			dim = "#7C7C7C", -- Dim white (darker variant)
+		},
+		bg0 = "#1C1F21", -- Darker variant of base background color
+		bg1 = "#242933", -- Base background color
+		bg2 = "#2B303B", -- Incrementally lighter background color
+		bg3 = "#353B45", -- Incrementally lighter background color
+		bg4 = "#3E4451", -- Incrementally lighter background color
+
+		fg0 = "#AAAAAA", -- Darker variant of base foreground color
+		fg1 = "#BBBDAF", -- Base foreground color
+		fg2 = "#CBCED0", -- Incrementally lighter foreground color
+		fg3 = "#D7DADC", -- Incrementally lighter foreground color
+		fg4 = "#E2E5E9", -- Incrementally lighter foreground color
+
+		sel0 = "#353B45", -- Selection color (slightly lighter)
+		sel1 = "#2B303B", -- Selection color (slightly lighter)
+		comment = "#8A8FAD",
+	},
+}
+
+return palettes
+local vim = vim
+
+require("zen-mode").setup {
+  window = {
+    width = 90, 
+    backdrop = 1,
+  },
+  on_open = function(win)
+    -- To enable the zen mode gutters to be transparent, the following code 
+    -- has been added. This could use a refactor/simplification
+    vim.wo[win].winhighlight = "Normal:ZenBg,NormalNC:ZenBg"
+    vim.api.nvim_set_hl(0, "ZenBg", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+    vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+  end,
+  on_close = function()
+    vim.api.nvim_set_hl(0, "ZenBg", {})
+  end,
+}
+
+-- Toggle Zen Mode with <leader>z
+vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { silent = true, desc = "Toggle Zen Mode" })
+
+-- Close Neovim if ZenMode is the last window
+vim.api.nvim_create_autocmd("User", {
+  pattern = "ZenLeave",
+  callback = function()
+    -- restore :q to default behavior when leaving Zen
+    vim.keymap.del("n", "q", { buffer = 0 })
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "ZenEnter",
+  callback = function()
+    -- in ZenMode, redefine q to quit nvim if last buffer
+    vim.keymap.set("n", "q", function()
+      if #vim.api.nvim_list_wins() == 1 then
+        vim.cmd("qa") -- quit all of Neovim
+      else
+        vim.cmd("q")  -- just quit Zen window
+      end
+    end, { buffer = 0 })
+  end,
+})
+
+require("ibl").setup({
+	indent = { char = "▏" },
+	whitespace = { highlight = { "Whitespace", "NonText" } },
+})
+
+-- Colorizer config
+require("colorizer").setup()
+
+-- Autopair config
+require("nvim-autopairs").setup({})
+
+-- Telescope
+local ts = require("telescope")
+ts.setup({
+    defaults = {
+        ripgrep_arguments = {
+          'rg',
+          '--hidden',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case'
+        },
+      },
+	extensions = {
+		file_browser = {
+			hijack_netrw = true,
+			grouped = true,
+			display_stat = { size = true, mode = true },
+		},
+	},
+})
+ts.load_extension("file_browser")
+
+-- Config lualine
+require("lualine").setup({
+	options = {
+		icons_enabled = true,
+	},
+})
+
+-- Nightfox config
+local palettes = require("lsys_theme")
+require("nightfox").setup({ palettes = palettes })
+vim.cmd("colorscheme nightfox")
+
+-- Autocomplete config
+local cmp = require("cmp")
+cmp.setup({
+	snippet = {
+		-- REQUIRED - you must specify a snippet engine
+		expand = function(args)
+			vim.fn["vsnip#anonymous"](args.body)
+		end,
+	},
+	window = {
+		-- completion = cmp.config.window.bordered(),
+		-- documentation = cmp.config.window.bordered(),
+	},
+	mapping = cmp.mapping.preset.insert({
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<C-Space>"] = cmp.mapping.complete(),
+		["<C-e>"] = cmp.mapping.abort(),
+		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+	}),
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+		{ name = "vsnip" },
+	}, {
+		{ name = "buffer" },
+	}),
+	-- TODO: disable snippets in comments
+	--enabled = function()
+	--    local context = require("cmp.config.context")
+	--    if context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
+	--        return false
+	--    else
+	--        return true
+	--    end
+	--end
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ "/", "?" }, {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = "buffer" },
+	},
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(":", {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
+		{ name = "cmdline" },
+	}),
+})
+
+-- Cmp capabilities for lspconfig
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+-- LSP config
+local lspconfig = require("lspconfig")
+lspconfig.rust_analyzer.setup({
+  capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      check = {
+        command = "clippy"
+      }
+    }
+  }
+})
+lspconfig.pyright.setup({ capabilities = capabilities })
+lspconfig.lua_ls.setup({ capabilities = capabilities })
+lspconfig.volar.setup({ capabilities = capabilities })
+--lspconfig.ts_ls.setup({
+--	capabilities = capabilities,
+--	init_options = {
+--		plugins = {
+--			{
+--				name = "@vue/typescript-plugin",
+--				location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+--				languages = { "javascript", "typescript", "vue" },
+--			},
+--		},
+--	},
+--	filetypes = {
+--		"javascript",
+--		"typescript",
+--		"typescriptreact",
+--		"javascriptreact",
+--		"vue",
+--	},
+--})
+lspconfig.eslint.setup({ capabilities = capabilities })
+lspconfig.tailwindcss.setup({ capabilities = capabilities })
+lspconfig.texlab.setup({ capabilities = capabilities })
+lspconfig.gopls.setup({ capabilities = capabilities })
+lspconfig.clangd.setup({ capabilities = capabilities })
+lspconfig.cmake.setup({ capabilities = capabilities })
+lspconfig.bashls.setup({ capabilities = capabilities })
+lspconfig.dartls.setup({ capabilities = capabilities })
+lspconfig.zls.setup({ capabilities = capabilities })
+lspconfig.denols.setup({ capabilities = capabilities })
+lspconfig.cssls.setup({ capabilities = capabilities })
+
+-- Treesitter config
+local tsconfig = require("nvim-treesitter.configs")
+tsconfig.setup({
+	ensure_installed = { "c", "go", "python", "rust", "lua", "vue", "javascript", "typescript", "latex", "tsx", "vue" },
+})
+
+-- Conform formatting config
+local conform = require("conform")
+conform.setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		python = { "autopep8" },
+		javascript = { "prettierd", "prettier", stop_after_first = true },
+		typescript = { "prettierd", "prettier", stop_after_first = true },
+		javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+		typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+		vue = { "prettierd", "prettier", stop_after_first = true },
+		svelte = { "prettierd", "prettier", stop_after_first = true },
+		css = { "prettierd", "prettier", stop_after_first = true },
+		scss = { "prettierd", "prettier", stop_after_first = true },
+		html = { "prettierd", "prettier", stop_after_first = true },
+		htmldjango = { "prettierd", "prettier", stop_after_first = true },
+		json = { "prettierd", "prettier", stop_after_first = true },
+		yaml = { "prettierd", "prettier", stop_after_first = true },
+		markdown = { "prettierd", "prettier", stop_after_first = true },
+		rust = { "rustfmt" },
+		tex = { "latexindent" },
+		go = { "gofmt" },
+		cmake = { "cmake-format" },
+		sh = { "shfmt" },
+		dart = { "dart_format" },
+		zig = { "zigfmt" },
+	},
+	formatters = {
+		latexindent = {
+			command = "latexindent",
+			args = { "-m", "-g", "/dev/null" }, -- enable line wrapping and overwrite
+		},
+	},
+	--formatters = {
+	--    prettier = {
+	--      args = function(self, ctx)
+	--        return { "--stdin-filepath", "$FILENAME",
+	--            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-tailwindcss/dist/index.mjs",
+	--            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-classnames/dist/index.js",
+	--            "--plugin", "/usr/local/lib/node_modules/prettier-plugin-merge/dist/index.js",
+	--            "--print-width", "80"}
+	--      end,
+	--    },
+	--},
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		conform.format({
+			bufnr = args.buf,
+			async = false,
+			timeout_ms = 500,
+			lsp_format = "fallback ",
+		})
+	end,
+})
+-- Fuzzy finding (telescope)
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+local vim = vim
+local Plug = vim.fn["plug#"]
+vim.call("plug#begin")
+
+Plug("folke/zen-mode.nvim")
+
+-- Git integration
+Plug("tpope/vim-fugitive")
+
+-- Configure the native neovim lsp
+Plug("neovim/nvim-lspconfig")
+
+-- Improved syntax highlighting
+Plug("nvim-treesitter/nvim-treesitter", { ["do"] = ":TSUpdate" })
+
+-- Fuzzy finding
+Plug("nvim-telescope/telescope.nvim", { ["tag"] = "0.1.5" })
+Plug("nvim-lua/plenary.nvim")
+Plug("BurntSushi/ripgrep")
+Plug("sharkdp/fd")
+Plug("nvim-tree/nvim-web-devicons")
+Plug("nvim-telescope/telescope-file-browser.nvim")
+
+-- Highlighting color values (ie. #FFFFFF)
+Plug("norcalli/nvim-colorizer.lua")
+
+-- Color theme management
+Plug("EdenEast/nightfox.nvim")
+
+-- Auto pairing brackets and quotes
+Plug("windwp/nvim-autopairs")
+
+-- Autocompletion
+Plug("hrsh7th/nvim-cmp")
+Plug("hrsh7th/cmp-nvim-lsp")
+Plug("hrsh7th/cmp-buffer")
+Plug("hrsh7th/cmp-path")
+Plug("hrsh7th/cmp-cmdline")
+Plug("hrsh7th/cmp-vsnip")
+Plug("hrsh7th/vim-vsnip")
+Plug("rafamadriz/friendly-snippets")
+
+-- Code formatter
+Plug("stevearc/conform.nvim")
+
+-- Change the style of the nvim status bar
+Plug("nvim-lualine/lualine.nvim")
+
+Plug("lukas-reineke/indent-blankline.nvim")
+
+Plug("ErichDonGubler/lsp_lines.nvim")
+
+vim.call("plug#end")
