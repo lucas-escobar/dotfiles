@@ -49,10 +49,11 @@ path=(
 )
 export PATH
 
-# Tab-autocomplete enhancements
+# Tab-autocomplete enhancements (required for fzf-tab)
 autoload -Uz compinit && compinit
 
-# Setup fzf-tab preview
+# fzf-tab config 
+zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept
 zstyle ':fzf-tab:complete:*' fzf-preview '
 if [ -d "$realpath" ]; then
   eza -1 --group-directories-first --icons --color=always "$realpath"
@@ -60,7 +61,6 @@ else
   bat --color=always --style=plain --paging=never --line-range=:200 "$realpath"
 fi
 '
-zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept
 
 # Plugins
 source ~/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
