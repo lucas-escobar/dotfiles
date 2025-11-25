@@ -1,53 +1,47 @@
-local vim = vim
-local Plug = vim.fn["plug#"]
-vim.call("plug#begin")
+return {
+  -- UI
+  { "folke/zen-mode.nvim" },
+  { "EdenEast/nightfox.nvim" },
+  { "norcalli/nvim-colorizer.lua" },
 
-Plug("folke/zen-mode.nvim")
+  -- Git
+  { "tpope/vim-fugitive" },
 
--- Git integration
-Plug("tpope/vim-fugitive")
+  -- LSP
+  { "neovim/nvim-lspconfig" },
 
--- Configure the native neovim lsp
-Plug("neovim/nvim-lspconfig")
+  -- Syntax Highlighting
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
--- Improved syntax highlighting
-Plug("nvim-treesitter/nvim-treesitter", { ["do"] = ":TSUpdate" })
+  -- Fuzzy Finder
+  { "nvim-telescope/telescope.nvim", tag = "0.1.5", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvim-telescope/telescope-file-browser.nvim", dependencies = "nvim-telescope/telescope.nvim" },
+  { "nvim-tree/nvim-web-devicons" },
+  { "BurntSushi/ripgrep" },
+  { "sharkdp/fd" },
 
--- Fuzzy finding
-Plug("nvim-telescope/telescope.nvim", { ["tag"] = "0.1.5" })
-Plug("nvim-lua/plenary.nvim")
-Plug("BurntSushi/ripgrep")
-Plug("sharkdp/fd")
-Plug("nvim-tree/nvim-web-devicons")
-Plug("nvim-telescope/telescope-file-browser.nvim")
+  -- Auto pairing
+  { "windwp/nvim-autopairs" },
 
--- Highlighting color values (ie. #FFFFFF)
-Plug("norcalli/nvim-colorizer.lua")
+  -- Autocompletion
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-path" },
+  { "hrsh7th/cmp-cmdline" },
+  { "hrsh7th/cmp-vsnip" },
+  { "hrsh7th/vim-vsnip" },
+  { "rafamadriz/friendly-snippets" },
 
--- Color theme management
-Plug("EdenEast/nightfox.nvim")
+  -- Code formatter
+  { "stevearc/conform.nvim" },
 
--- Auto pairing brackets and quotes
-Plug("windwp/nvim-autopairs")
+  -- Status bar
+  { "nvim-lualine/lualine.nvim" },
+  { "lukas-reineke/indent-blankline.nvim" },
+  { "ErichDonGubler/lsp_lines.nvim" },
 
--- Autocompletion
-Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/cmp-nvim-lsp")
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-path")
-Plug("hrsh7th/cmp-cmdline")
-Plug("hrsh7th/cmp-vsnip")
-Plug("hrsh7th/vim-vsnip")
-Plug("rafamadriz/friendly-snippets")
-
--- Code formatter
-Plug("stevearc/conform.nvim")
-
--- Change the style of the nvim status bar
-Plug("nvim-lualine/lualine.nvim")
-
-Plug("lukas-reineke/indent-blankline.nvim")
-
-Plug("ErichDonGubler/lsp_lines.nvim")
-
-vim.call("plug#end")
+  -- LSP installer & manager
+  { "williamboman/mason.nvim" },
+  { "williamboman/mason-lspconfig.nvim", dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" } },
+}
