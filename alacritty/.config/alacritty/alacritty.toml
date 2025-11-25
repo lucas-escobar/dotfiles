@@ -1,11 +1,12 @@
-
 [window]
 padding = { x = 24, y = 24 }
 opacity = 0.93
 
 [font]
-normal = { family = "NotoMono Nerd Font Mono", style = "Regular"}
-size = 13.0
+normal = { family = "DejaVu Sans Mono", style = "Book" }
+bold = { family = "DejaVu Sans Mono", style = "Bold" }
+italic = { family = "DejaVu Sans Mono", style = "Oblique" }
+size = 12.0
 
 [general]
 import = [
