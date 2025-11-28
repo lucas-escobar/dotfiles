@@ -1,1 +1,0 @@
-/home/lucas/proj/colsync/output/nvim/colsync.lua
