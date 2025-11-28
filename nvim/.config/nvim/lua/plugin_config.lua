@@ -98,9 +98,12 @@ require('lualine').setup({
 })
 
 -- Nightfox config
-local palettes = require('lsys_theme')
-require('nightfox').setup({ palettes = palettes })
-vim.cmd('colorscheme nightfox')
+--local palettes = require('lsys_theme')
+--require('nightfox').setup({ palettes = palettes })
+--vim.cmd('colorscheme nightfox')
+
+-- TODO this is not a plugin, its a custom theme
+require('colsync').apply_theme()
 
 -- Autocomplete config
 local cmp = require('cmp')
@@ -181,6 +184,8 @@ vim.lsp.config('bashls', {
 })
 vim.lsp.enable('bashls')
 
+vim.lsp.enable('pyright')
+
 -- Treesitter config
 local tsconfig = require('nvim-treesitter.configs')
 tsconfig.setup({
@@ -196,6 +201,11 @@ tsconfig.setup({
 		'tsx',
 		'vue',
 	},
+	auto_install = true,
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false,
+	},
 })
 
 -- Conform formatting config
@@ -203,7 +213,7 @@ local conform = require('conform')
 conform.setup({
 	formatters_by_ft = {
 		lua = { 'stylua' },
-		python = { 'autopep8' },
+		python = { 'ruff_format', 'ruff_fix' },
 		javascript = { 'prettierd', 'prettier', stop_after_first = true },
 		typescript = { 'prettierd', 'prettier', stop_after_first = true },
 		javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },

@@ -1,6 +1,5 @@
 [window]
 padding = { x = 24, y = 24 }
-opacity = 0.93
 
 [font]
 normal = { family = "DejaVu Sans Mono", style = "Book" }
@@ -10,5 +9,5 @@ size = 12.0
 
 [general]
 import = [
-    "~/.config/alacritty/themes/themes/nordic.toml"
+    "~/proj/colsync/output/alacritty/colsync.toml"
 ]

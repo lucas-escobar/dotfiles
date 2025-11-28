@@ -1,3 +1,5 @@
+@theme "custom"
+
 configuration {
 /*	modes: "window,drun,run,ssh";*/
 /*	font: "mono 12";*/
@@ -150,4 +152,3 @@ configuration {
   }
 }
 
-@theme "custom"

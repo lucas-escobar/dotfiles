@@ -1,11 +1,6 @@
-* {
-    background:                  #242933;
-    foreground:                  #BBBDAF;
-    lightbg:                     #242933;
-    lightfg:                     #BBBDAF;
-    active:                      #A3D6A9;
-    urgent:                      #EC69A0;
+@import "~/proj/colsync/output/rofi/colsync.rasi"
 
+* {
     normal-background:           var(background);
     normal-foreground:           var(foreground);
     active-background:           var(background);

@@ -36,6 +36,7 @@ alias rm='rm -i'
 alias vi='nvim'
 alias vim='nvim'
 alias g="git"
+alias py="python"
 
 # Path Modification
 path=(

@@ -10,8 +10,8 @@ set $key_up                          k
 set $key_right                       l
 
 set $window_font                     pango:monospace 8 
-set $window_gap_width                0 
-set $window_gap_height               0
+set $window_gap_outer                0
+set $window_gap_inner                16
 set $window_border_size              1
 
 set $terminal                        alacritty
@@ -19,11 +19,12 @@ set $browser                         firefox
 set $app_launcher                    rofi 
 set $compositor                      picom
 
-set $bg                              #242933
-set $fg                              #BBBDAF
-set $primary                         #A3D6A9
-set $secondary                       #EC69A0
-
+# For colors to be included in a composable way, the colors must be applied 
+# within a file that is also included. This is because included variables cannot 
+# be used in the parent config
+# see -> https://i3wm.org/docs/userguide.html#include
+include ~/proj/colsync/output/i3/colsync.conf
+include ./apply_colors.conf
 
 ### Apps
 bindsym $mod+Return exec $terminal 
@@ -37,12 +38,12 @@ font $window_font
 floating_modifier $mod
 
 default_border pixel $window_border_size
-default_floating_border pixel $window_border_size 
+default_floating_border pixel $window_border_size
 smart_borders on
 
-gaps horizontal $window_gap_width
-gaps vertical   $window_gap_height
-smart_gaps on
+gaps outer $window_gap_outer
+gaps inner $window_gap_inner
+smart_gaps off
 
 bindsym $mod+Shift+q kill
 bindsym $mod+f fullscreen toggle
@@ -90,7 +91,7 @@ exec --no-startup-id xrandr --output DVI-D-0 --primary --left-of DP-2 --rate 144
 exec --no-startup-id feh --no-fehbg --bg-scale ~/wallpapers/fern.jpg
 
 # Redshift
-exec --no-startup-id redshift
+exec --no-startup-id redshift -c ~/.config/redshift/redshift.conf
 
 ### Workspaces
 set $ws1 "1"
@@ -128,20 +129,8 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-### Colors
-# class                 border  bground text    indicator child_border
-client.focused          $primary $bg $fg $primary $primary 
-client.focused_inactive $bg $bg $fg $bg $bg 
-client.unfocused        $bg $bg $fg $bg $bg 
-client.urgent           $secondary $secondary $fg $secondary $secondary 
-client.placeholder      $bg $bg $fg $bg $bg 
-
-client.background       $bg
-
 ### Status bar
-
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
 
 ### Misc
 # reload the configuration file
