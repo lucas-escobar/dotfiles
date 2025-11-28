@@ -2,9 +2,9 @@
 padding = { x = 24, y = 24 }
 
 [font]
-normal = { family = "DejaVu Sans Mono", style = "Book" }
-bold = { family = "DejaVu Sans Mono", style = "Bold" }
-italic = { family = "DejaVu Sans Mono", style = "Oblique" }
+normal = { family = "DejaVuSansM Nerd Font Mono", style = "Regular" }
+bold = { family = "DejaVuSansM Nerd Font Mono", style = "Bold" }
+italic = { family = "DejaVuSansM Nerd Font Mono", style = "Oblique" }
 size = 12.0
 
 [general]
