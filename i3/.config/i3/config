@@ -23,7 +23,7 @@ set $compositor                      picom
 # within a file that is also included. This is because included variables cannot 
 # be used in the parent config
 # see -> https://i3wm.org/docs/userguide.html#include
-include ~/proj/colsync/output/i3/colsync.conf
+include ~/.local/share/colsync/i3/colsync.conf
 include ./apply_colors.conf
 
 ### Apps

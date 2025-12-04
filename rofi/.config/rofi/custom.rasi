@@ -1,4 +1,4 @@
-@import "~/proj/colsync/output/rofi/colsync.rasi"
+@import "~/.local/share/colsync/rofi/colsync.rasi"
 
 * {
     normal-background:           var(background);
