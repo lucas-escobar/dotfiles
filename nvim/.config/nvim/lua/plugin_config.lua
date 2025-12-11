@@ -2,6 +2,15 @@ local vim = vim
 
 require('mason').setup()
 
+require('lint').linters_by_ft = {
+	python = { 'ruff' },
+}
+vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost' }, {
+	callback = function()
+		require('lint').try_lint()
+	end,
+})
+
 require('zen-mode').setup({
 	window = {
 		width = 90,
@@ -101,9 +110,6 @@ require('lualine').setup({
 --local palettes = require('lsys_theme')
 --require('nightfox').setup({ palettes = palettes })
 --vim.cmd('colorscheme nightfox')
-
--- TODO this is not a plugin, its a custom theme
-require('colsync').apply_theme()
 
 -- Autocomplete config
 local cmp = require('cmp')
@@ -253,6 +259,15 @@ conform.setup({
 	--      end,
 	--    },
 	--},
+})
+
+-- TODO this is not a plugin, its a custom theme
+--vim.cmd('hi clear')
+--require('colsync').apply_theme()
+vim.api.nvim_create_autocmd('VimEnter', {
+	callback = function()
+		require('colsync').apply_theme()
+	end,
 })
 
 vim.api.nvim_create_autocmd('BufWritePre', {

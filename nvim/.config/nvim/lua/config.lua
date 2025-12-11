@@ -16,31 +16,36 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.isfname:append("@-@")
+vim.opt.signcolumn = 'yes'
+vim.opt.isfname:append('@-@')
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = '80'
 -- yy and pp will use the system clipboard (+)
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = 'unnamedplus'
 
-vim.diagnostic.config({
-	virtual_text = false,
-	virtual_lines = false,
-	float = { source = "if_many" },
-})
+--vim.diagnostic.config({
+--	virtual_text = false,
+--	virtual_lines = false,
+--})
+
+--vim.diagnostic.open_float(nil, {
+--	border = 'rounded',
+--	winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder',
+--	winblend = 0,
+--})
 
 vim.g.markdown_fenced_languages = {
-	"ts=typescript",
-	"js=javascript",
-	"sh=bash",
-	"rust=rust",
-	"py=python",
+	'ts=typescript',
+	'js=javascript',
+	'sh=bash',
+	'rust=rust',
+	'py=python',
 }
 
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts = opts or {}
-	opts.border = opts.border or "single"
+	opts.border = opts.border or 'single'
 	opts.max_width = opts.max_width or 80
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
@@ -71,20 +76,19 @@ vim.g.rustfmt_autosave = 1
 --        print("Socket already in use: " .. socket_path)
 --    end
 --end
-vim.api.nvim_create_augroup("UserColors", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme", {
-	group = "UserColors",
-	pattern = "*",
-	callback = function()
-		vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
-	end,
-})
+--vim.api.nvim_create_augroup('UserColors', { clear = true })
+--vim.api.nvim_create_autocmd('ColorScheme', {
+--	group = 'UserColors',
+--	pattern = '*',
+--	callback = function()
+--		vim.cmd('highlight Normal ctermbg=NONE guibg=NONE')
+--	end,
+--})
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'markdown',
 	callback = function()
 		vim.opt_local.spell = true
-		vim.opt_local.spelllang = "en_us"
+		vim.opt_local.spelllang = 'en_us'
 	end,
 })
-

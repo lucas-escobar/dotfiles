@@ -1,3 +1,5 @@
+set -o pipefail
+
 # Prompt
 eval "$(starship init zsh)"
 
@@ -5,6 +7,77 @@ eval "$(starship init zsh)"
 vol() {
     wpctl set-volume @DEFAULT_AUDIO_SINK@ "$1%"
 }
+
+# Fetch a gitignore from GitHub gitignore repo
+get_gig() {
+    local type="$1"
+    if [[ -z "$type" ]]; then
+        echo "Usage: get_gig <type>"
+        return 1
+    fi
+    local url="https://raw.githubusercontent.com/github/gitignore/main/${type}.gitignore"
+    curl -sSf -o .gitignore $url \
+        && echo ".gitignore for $type created." \
+        || echo "Failed to fetch gitignore for $type at $url"
+}
+
+get_lic() {
+  set -o pipefail
+
+  local type="$1"
+  local fullname="${2:-$GIT_AUTHOR_NAME}"
+  local year
+  year=$(date +%Y)
+
+  if [[ -z "$fullname" ]]; then
+    echo "error: no author name provided and GIT_AUTHOR_NAME not set" >&2
+    return 1
+  fi
+
+  local url="https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/${type}.txt"
+
+  curl -sSf "$url" \
+    | sed '1,/^---$/d' \
+    | sed '1{/^$/d}' \
+    | sed "s/\[year\]/$year/g" \
+    | sed "s/\[fullname\]/$fullname/g" \
+    > LICENSE
+}
+
+# Initialize a new project
+init_project() {
+    local name="$1"
+    local type="$2"      # for gitignore: Python, Node, etc.
+    local license="$3"   # MIT, Apache-2.0, etc.
+    
+    if [[ -z "$name" ]]; then
+        echo "Usage: init_project <name> [gitignore-type] [license]"
+        return 1
+    fi
+    
+    mkdir -p "$name"
+    cd "$name" || return
+    
+    # Initialize git
+    git init
+    
+    # Fetch gitignore
+    if [[ -n "$type" ]]; then
+        get_gitignore "$type"
+    fi
+    
+    # Fetch license
+    if [[ -n "$license" ]]; then
+        get_license "$license"
+    fi
+    
+    # Create README
+    touch README.md
+    echo "# $name" > README.md
+    
+    echo "Project $name initialized."
+}
+
 
 # Aliases
 unalias l ll la lt llt lat 2>/dev/null
@@ -31,8 +104,6 @@ alias df='duf'
 alias top='btm'
 alias ps='procs'
 alias cp='rsync -ah --info=progress2'
-alias mv='mv -i'
-alias rm='rm -i'
 alias vi='nvim'
 alias vim='nvim'
 alias g="git"
