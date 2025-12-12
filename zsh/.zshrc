@@ -108,6 +108,7 @@ alias vi='nvim'
 alias vim='nvim'
 alias g="git"
 alias py="python"
+alias j="just"
 
 # Path Modification
 path=(
